@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  apprise:
+    image: apprise
+    container_name: apprise
+    ports:
+      - 8000:8000
+    volumes:
+      - ./var/config:/config
+  cloudflare:
+    image: bkonicek/cloudflare-ddns
+    volumes:
+      - ./var/ddns:/config
+    environment:
+      APPRISE: http://apprise:8000/get/apprise
+      CF_APITOKEN: 
+      CF_HOSTS: 
+      CF_ZONES: 
+      CF_RECORDTYPES: 
