@@ -60,7 +60,7 @@ fcurl() {
 fapprise() {
     if [[ -n ${APPRISE} ]]; then
             logger "Sending notification with Apprise to [${apprise_uri}]."
-            result=$(apprise -v -t "Cloudflare DDNS" --tag all -b "DNS record [${2}] [${1}] has been updated to [${3}]." --config "${apprise_uri}") || logger "Error response:\n${result}" ERROR
+            result=$(apprise -v -t "Cloudflare DDNS" --tag ddns -b "DNS record [${2}] [${1}] has been updated to [${3}]." --config "${apprise_uri}") || logger "Error response:\n${result}" ERROR
     fi
 }
 fjson() {
