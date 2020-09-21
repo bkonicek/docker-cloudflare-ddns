@@ -1,0 +1,42 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ddns
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflare-ddns
+  namespace: ddns
+spec:
+  selector:
+    matchLabels:
+      app: ddns
+  template:
+    metadata:
+      labels:
+        app: ddns
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: cloudflare-ddns
+          image: bkonicek/cloudflare-ddns
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          env:
+            - name: APPRISE
+              value: http://apprise-api.apprise:8000/get/alerts
+            - name: CF_HOSTS
+              value: home.benkonicek.com
+            - name: CF_ZONES
+              value: benkonicek.com
+            - name: CF_RECORDTYPES
+              value: A
+            - name: CF_APITOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cloudflare
+                  key: dns-token
